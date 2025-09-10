@@ -14,33 +14,52 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'npm test || true' // Allows pipeline to continue despite test failures
-                emailext body: 'Test Message',
-                    subject: 'Test Subject',
-                    to: 'chazzahorn@gmail.com'
+                // emailext body: 'Test Message',
+                //     subject: 'Test Subject',
+                //     to: 'chazzahorn@gmail.com'
+
+                emailext
+                    subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+                    body: """Stage: ${env.STAGE_NAME}
+                        Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                        Status: ${BUILD_STATUS}
+                        URL: ${env.BUILD_URL}
+
+                        Changes since last success (if any):
+                        ${CHANGES_SINCE_LAST_SUCCESS}
+
+                        Test summary (if using JUnit etc.):
+                        ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
+
+                        Recent console output:
+                        ${BUILD_LOG, maxLines=300}""",
+                    to: 'chazzahorn@gmail.com',
+                    attachLog: true,
+                    compressLog: true
             }
             post {
-            always {
-            emailext(
-                subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
-                body: """Stage: ${env.STAGE_NAME}
-                    Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-                    Status: ${BUILD_STATUS}
-                    URL: ${env.BUILD_URL}
+                always {
+                    emailext(
+                        subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+                        body: """Stage: ${env.STAGE_NAME}
+                            Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                            Status: ${BUILD_STATUS}
+                            URL: ${env.BUILD_URL}
 
-                    Changes since last success (if any):
-                    ${CHANGES_SINCE_LAST_SUCCESS}
+                            Changes since last success (if any):
+                            ${CHANGES_SINCE_LAST_SUCCESS}
 
-                    Test summary (if using JUnit etc.):
-                    ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
+                            Test summary (if using JUnit etc.):
+                            ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
 
-                    Recent console output:
-                    ${BUILD_LOG, maxLines=300}""",
-                to: 'chazzahorn@gmail.com',
-                attachLog: true,
-                compressLog: true
-            )
+                            Recent console output:
+                            ${BUILD_LOG, maxLines=300}""",
+                        to: 'chazzahorn@gmail.com',
+                        attachLog: true,
+                        compressLog: true
+                    )
+                }
             }
-      }
         }
         stage('Generate Coverage Report') {
             steps {
@@ -52,26 +71,41 @@ pipeline {
             steps {
                 sh 'npm audit || true' // This will show known CVEs in the output
                 // email here
-            }
-            post {
-            always {
-            emailext(
-                subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
-                body: """Stage: ${env.STAGE_NAME}
-                    Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-                    Status: ${BUILD_STATUS}
-                    URL: ${env.BUILD_URL}
 
-                    Recent console output:
-                    ${BUILD_LOG, maxLines=200}""",
-                to: 'chazzahorn@gmail.com',
-                attachLog: true,
-                compressLog: true
-                // Or attach the audit report if produced:
-                // attachmentsPattern: 'audit.json'
-            )
+                emailext
+                    subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+                    body: """Stage: ${env.STAGE_NAME}
+                        Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                        Status: ${BUILD_STATUS}
+                        URL: ${env.BUILD_URL}
+
+                        Recent console output:
+                        ${BUILD_LOG, maxLines=200}""",
+                    to: 'chazzahorn@gmail.com',
+                    attachLog: true,
+                    compressLog: true
+                    // Or attach the audit report if produced:
+                    // attachmentsPattern: 'audit.json'
             }
-      }
+            // post {
+            //     always {
+            //         emailext(
+            //             subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+            //             body: """Stage: ${env.STAGE_NAME}
+            //                 Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+            //                 Status: ${BUILD_STATUS}
+            //                 URL: ${env.BUILD_URL}
+
+            //                 Recent console output:
+            //                 ${BUILD_LOG, maxLines=200}""",
+            //             to: 'chazzahorn@gmail.com',
+            //             attachLog: true,
+            //             compressLog: true
+            //             // Or attach the audit report if produced:
+            //             // attachmentsPattern: 'audit.json'
+            //         )
+            //     }
+            // }
         }
     }
 }
