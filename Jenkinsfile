@@ -29,10 +29,7 @@ pipeline {
                             URL: ${env.BUILD_URL}
 
                             Changes since last success (if any):
-                            ${CHANGES_SINCE_LAST_SUCCESS}
-
-                            Recent console output:
-                            ${BUILD_LOG, maxLines=300}""",
+                            ${CHANGES_SINCE_LAST_SUCCESS}""",
                         // body: """Stage: ${env.STAGE_NAME}
                         //     Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
                         //     Status: ${BUILD_STATUS}
@@ -67,6 +64,10 @@ pipeline {
                 always {
                     emailext(
                         subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+                        body: """Stage: ${env.STAGE_NAME}
+                            Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                            Status: ${BUILD_STATUS}
+                            URL: ${env.BUILD_URL}""",
                         body: """Stage: ${env.STAGE_NAME}
                             Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
                             Status: ${BUILD_STATUS}
