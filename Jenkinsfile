@@ -22,10 +22,10 @@ pipeline {
             post {
                 always {
                     emailext(
-                        subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+                        subject: "${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
                         body: """Stage: ${env.STAGE_NAME}
                             Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-                            Status: ${BUILD_STATUS}
+                            Status: ${currentBuild.currentResult}
                             URL: ${env.BUILD_URL}
 
                             Changes since last success (if any):
@@ -63,10 +63,10 @@ pipeline {
             post {
                 always {
                     emailext(
-                        subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+                        subject: "${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
                         body: """Stage: ${env.STAGE_NAME}
                             Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-                            Status: ${BUILD_STATUS}
+                            Status: ${currentBuild.currentResult}
                             URL: ${env.BUILD_URL}""",
                         // body: """Stage: ${env.STAGE_NAME}
                         //     Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
