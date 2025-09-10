@@ -14,7 +14,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'npm test || true' // Allows pipeline to continue despite test failures
-                
+
                 // emailext body: 'Test Message',
                 //     subject: 'Test Subject',
                 //     to: 'chazzahorn@gmail.com'
@@ -31,11 +31,21 @@ pipeline {
                             Changes since last success (if any):
                             ${CHANGES_SINCE_LAST_SUCCESS}
 
-                            Test summary (if using JUnit etc.):
-                            ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
-
                             Recent console output:
                             ${BUILD_LOG, maxLines=300}""",
+                        // body: """Stage: ${env.STAGE_NAME}
+                        //     Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                        //     Status: ${BUILD_STATUS}
+                        //     URL: ${env.BUILD_URL}
+
+                        //     Changes since last success (if any):
+                        //     ${CHANGES_SINCE_LAST_SUCCESS}
+
+                        //     Test summary (if using JUnit etc.):
+                        //     ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
+
+                        //     Recent console output:
+                        //     ${BUILD_LOG, maxLines=300}""",
                         to: 'chazzahorn@gmail.com',
                         attachLog: true,
                         compressLog: true
