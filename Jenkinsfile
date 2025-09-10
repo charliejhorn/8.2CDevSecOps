@@ -37,29 +37,29 @@ pipeline {
                     attachLog: true,
                     compressLog: true
             }
-            post {
-                always {
-                    emailext(
-                        subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
-                        body: """Stage: ${env.STAGE_NAME}
-                            Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-                            Status: ${BUILD_STATUS}
-                            URL: ${env.BUILD_URL}
+            // post {
+            //     always {
+            //         emailext(
+            //             subject: "${BUILD_STATUS}: ${env.JOB_NAME} #${env.BUILD_NUMBER} — ${env.STAGE_NAME}",
+            //             body: """Stage: ${env.STAGE_NAME}
+            //                 Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+            //                 Status: ${BUILD_STATUS}
+            //                 URL: ${env.BUILD_URL}
 
-                            Changes since last success (if any):
-                            ${CHANGES_SINCE_LAST_SUCCESS}
+            //                 Changes since last success (if any):
+            //                 ${CHANGES_SINCE_LAST_SUCCESS}
 
-                            Test summary (if using JUnit etc.):
-                            ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
+            //                 Test summary (if using JUnit etc.):
+            //                 ${TEST_COUNTS, format="Counts: total=${0}, passed=${1}, failed=${2}, skipped=${3}"}
 
-                            Recent console output:
-                            ${BUILD_LOG, maxLines=300}""",
-                        to: 'chazzahorn@gmail.com',
-                        attachLog: true,
-                        compressLog: true
-                    )
-                }
-            }
+            //                 Recent console output:
+            //                 ${BUILD_LOG, maxLines=300}""",
+            //             to: 'chazzahorn@gmail.com',
+            //             attachLog: true,
+            //             compressLog: true
+            //         )
+            //     }
+            // }
         }
         stage('Generate Coverage Report') {
             steps {
