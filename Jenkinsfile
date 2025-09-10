@@ -26,10 +26,7 @@ pipeline {
                         body: """Stage: ${env.STAGE_NAME}
                             Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
                             Status: ${currentBuild.currentResult}
-                            URL: ${env.BUILD_URL}
-
-                            Changes since last success (if any):
-                            ${CHANGES_SINCE_LAST_SUCCESS}""",
+                            URL: ${env.BUILD_URL}""",
                         // body: """Stage: ${env.STAGE_NAME}
                         //     Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
                         //     Status: ${BUILD_STATUS}
