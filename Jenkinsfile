@@ -68,13 +68,13 @@ pipeline {
                             Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
                             Status: ${BUILD_STATUS}
                             URL: ${env.BUILD_URL}""",
-                        body: """Stage: ${env.STAGE_NAME}
-                            Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-                            Status: ${BUILD_STATUS}
-                            URL: ${env.BUILD_URL}
+                        // body: """Stage: ${env.STAGE_NAME}
+                        //     Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                        //     Status: ${BUILD_STATUS}
+                        //     URL: ${env.BUILD_URL}
 
-                            Recent console output:
-                            ${BUILD_LOG, maxLines=200}""",
+                        //     Recent console output:
+                        //     ${BUILD_LOG, maxLines=200}""",
                         to: 'chazzahorn@gmail.com',
                         attachLog: true,
                         compressLog: true
