@@ -42,7 +42,6 @@ pipeline {
                         //     ${BUILD_LOG, maxLines=300}""",
                         to: 'chazzahorn@gmail.com',
                         attachLog: true,
-                        compressLog: true
                     )
                 }
             }
@@ -74,7 +73,6 @@ pipeline {
                         //     ${BUILD_LOG, maxLines=200}""",
                         to: 'chazzahorn@gmail.com',
                         attachLog: true,
-                        compressLog: true
                     )
                 }
             }
