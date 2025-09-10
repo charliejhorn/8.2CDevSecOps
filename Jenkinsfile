@@ -6,6 +6,11 @@ pipeline {
                 git branch: 'main', url: ' https://github.com/charliejhorn/8.2CDevSecOps.git'
             }
         }
+        stage('Debug Env') {
+            steps {
+                sh 'echo $PATH && which npm || echo "npm not found"'
+            }
+        }
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
